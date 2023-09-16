@@ -29,8 +29,7 @@ public class MeetPurdueMain {
     public static void main(String[] args) {
         try {
             CreateLoginForm form = new CreateLoginForm();
-            form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
-            form.setSize(840, 840 / 12 * 9);
+            form.setSize(300, 300);
             form.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
