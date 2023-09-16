@@ -45,7 +45,7 @@ import java.awt.Font;
             btn1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new Part1();
+                    new Login();
                     setVisible(false);
                 }
             });
