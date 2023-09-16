@@ -45,6 +45,7 @@ import java.awt.Font;
             btn1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    new MeetPurdueMain();
                     new Login();
                     setVisible(false);
                 }
