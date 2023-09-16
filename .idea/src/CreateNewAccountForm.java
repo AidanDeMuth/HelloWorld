@@ -83,6 +83,7 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         String confirmValue = textField3.getText();
 
         if(passValue.equals(confirmValue)) {
+
             try
             {
                 FileWriter writer = new FileWriter("UserData.csv", true);
@@ -94,6 +95,9 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
             }
 
 
+            FileWriter writer = new FileWriter("UserData.csv", true);
+            String info = userValue + "," + passValue;
+            writer.write(info);
         } else {
             System.out.println("Please enter valid username and password");
         }
