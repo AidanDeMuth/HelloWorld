@@ -29,11 +29,15 @@ public class MeetPurdueMain {
     public static void main(String[] args) {
         try {
             CreateLoginForm form = new CreateLoginForm();
-            form.setSize(300, 300);
+            form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
+            form.setSize(840, 840 / 12 * 9);
             form.setVisible(true);
+            form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            form.setLocationRelativeTo(null);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.out.println("hi");
         }
+
     }
 }
