@@ -25,6 +25,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
+//JSON
+import org.json.simple.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import java.io.FileWriter;
+import java.io.IOException;
+
+
 public class CreateNewAccountForm extends JFrame implements ActionListener{
 
     JButton submitButton;
@@ -76,7 +84,7 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         String confirmValue = textField3.getText();
 
         if(passValue.equals(confirmValue)) {
-
+        JSONObject newEntry = new JSONObject();
         } else {
             System.out.println("Please enter valid username and password");
         }
