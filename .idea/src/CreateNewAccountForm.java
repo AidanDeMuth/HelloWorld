@@ -25,10 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-//JSON
-import org.json.simple.*;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+//FileWriter
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -79,7 +76,9 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae)
     {
         //Pulls info from text boxs
+        //UserValue is username
         String userValue = textField1.getText();
+        //PassValue is password
         String passValue = textField2.getText();
         String confirmValue = textField3.getText();
 
