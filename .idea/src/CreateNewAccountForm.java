@@ -94,10 +94,6 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
                 ;
             }
 
-
-            FileWriter writer = new FileWriter("UserData.csv", true);
-            String info = userValue + "," + passValue;
-            writer.write(info);
         } else {
             System.out.println("Please enter valid username and password");
         }
