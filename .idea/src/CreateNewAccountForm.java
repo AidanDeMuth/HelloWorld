@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -77,19 +78,23 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
     {
         //Pulls info from text boxs
         //UserValue is username
-        String userValue = textField1.getText();
+        String userValue = textField1.getText().trim();
         //PassValue is password
-        String passValue = textField2.getText();
-        String confirmValue = textField3.getText();
+        String passValue = textField2.getText().trim();
+        String confirmValue = textField3.getText().trim();
 
         if(passValue.equals(confirmValue)) {
 
             try
             {
-                FileWriter writer = new FileWriter("UserData.csv", true);
-                System.out.println("Got Here");
-                String info = userValue + "," + passValue;
-                writer.write(info);
+                FileWriter writer = new FileWriter("UserData.txt", true);
+                String[] writeString = {userValue, passValue};
+                String dataLine = String.join(" ",writeString);
+                dataLine += "\n";
+                System.out.println(dataLine);
+                writer.write(dataLine);
+                writer.flush();
+                writer.close();
             } catch (Exception e) {
                 ;
             }
