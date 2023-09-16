@@ -33,6 +33,7 @@ public class MeetPurdueMain {
             form.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
+            System.out.println("hi");
         }
     }
 }
