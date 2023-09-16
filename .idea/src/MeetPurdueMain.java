@@ -31,6 +31,8 @@ public class MeetPurdueMain {
             CreateLoginForm form = new CreateLoginForm();
             form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
             form.setSize(840, 840/12*9);
+            form.setLocationRelativeTo(null);
+            form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             form.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
