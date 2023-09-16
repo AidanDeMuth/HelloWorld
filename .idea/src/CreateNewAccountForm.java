@@ -34,7 +34,7 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
 
     JButton submitButton;
     JPanel formPanel;
-    JLabel usernameLabel, passwordLabel, cornfirmPasswordLabel;
+    JLabel usernameLabel, passwordLabel, confirmPasswordLabel;
     final JTextField textField1, textField2, textField3;
 
     CreateNewAccountForm() {
@@ -49,8 +49,8 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         textField2 = new JTextField(150);
 
         //Confirm Password Label
-        passwordLabel = new JLabel();
-        passwordLabel.setText("Confirm Password");
+        confirmPasswordLabel = new JLabel();
+        confirmPasswordLabel.setText("Confirm Password");
         textField3 = new JTextField(150);
 
         //Submit Button
@@ -62,7 +62,7 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         formPanel.add(textField1);
         formPanel.add(passwordLabel);
         formPanel.add(textField2);
-        formPanel.add(cornfirmPasswordLabel);
+        formPanel.add(confirmPasswordLabel);
         formPanel.add(textField3);
         formPanel.add(submitButton);
         add(formPanel, BorderLayout.CENTER);
@@ -83,9 +83,16 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         String confirmValue = textField3.getText();
 
         if(passValue.equals(confirmValue)) {
-        FileWriter writer = new FileWriter("UserData.csv", true);
-        String info = userValue + "," + passValue;
-        writer.write(info);
+            try
+            {
+                FileWriter writer = new FileWriter("UserData.csv", true);
+                System.out.println("Got Here");
+                String info = userValue + "," + passValue;
+                writer.write(info);
+            } catch (Exception e) {
+                ;
+            }
+
 
         } else {
             System.out.println("Please enter valid username and password");
