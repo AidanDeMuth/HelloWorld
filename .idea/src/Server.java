@@ -15,8 +15,8 @@ public class Server extends Thread{
     }
     
     public static void main(String[] args) {
-        for (int i = 0; i < SERVER_PORTS.length(); i++){
-
+        for (int i = 1; i <= SERVER_PORTS.length; i++){
+            Server serverObject = new Server(i);
         }
     }
 
