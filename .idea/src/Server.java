@@ -2,15 +2,27 @@ import java.net.*;
 import java.io.*;
 import java.util.HashMap;
 
-public class Server {
+public class Server extends Thread{
 
     public static final int[] SERVER_PORTS = {5001, 5002, 5003, 5004, 5005};
     public static final String SERVER_IP = "";
     public static final String SERVER_NAME = "LOCALHOST";
 
+    public int serverNumber;
 
+    public Server(int serverNumberArg) {
+        serverNumber = serverNumberArg;
+    }
     
     public static void main(String[] args) {
+        for (int i = 0; i < SERVER_PORTS.length(); i++){
+
+        }
+    }
+
+
+    public void run() {
+
         try {
 
             // opens ServerSocket, waits for connecting ClientSocket
@@ -44,8 +56,7 @@ public class Server {
     }
 
 
-
-    public static boolean loginReceive( PrintWriter printerWriterS1, BufferedReader bufferedReaderS1, HashMap loginDetails) throws IOException, UnknownHostException {
+    private static boolean loginReceive( PrintWriter printerWriterS1, BufferedReader bufferedReaderS1, HashMap loginDetails) throws IOException, UnknownHostException {
 
         // receive data
         boolean loggedIn = false;
