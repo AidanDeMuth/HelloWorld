@@ -33,17 +33,6 @@ public class CreateLoginForm extends JFrame implements ActionListener {
     JLabel usernameLabel, passwordLabel;
     final JTextField textField1, textField2;
 
-
-    public static void main(String[] args) {
-        try {
-            new CreateLoginForm();
-            CreateLoginForm form = new CreateLoginForm();
-            form.setSize(1000, 1000);
-            form.setVisible(true);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }
     CreateLoginForm() {
 
         //Username Label
@@ -88,6 +77,8 @@ public class CreateLoginForm extends JFrame implements ActionListener {
             System.out.println("Please enter valid username and password");
         }
     }
+
+
 
 
 }
