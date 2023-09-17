@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +27,9 @@ import java.awt.*;
 import java.util.*;
 
 //FileWriter
-import java.io.FileWriter;
-import java.io.IOException;
 
 
-public class CreateNewAccountForm extends JFrame implements ActionListener{
+public class CreateNewAccountForm extends JFrame implements ActionListener {
 
     JButton submitButton;
     JPanel formPanel;
@@ -78,25 +76,49 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         submitButton.addActionListener(this);
         setTitle("Create Account Form");
 
-        formPanel.setSize(1000,1000);
+        formPanel.setSize(1000, 1000);
     }
-    public void actionPerformed(ActionEvent ae)
-    {
+
+    public void actionPerformed(ActionEvent ae) {
         //Pulls info from text boxs
-        //UserValue is username
         String userValue = textField1.getText().trim();
-        //PassValue is password
         String passValue = textField2.getText().trim();
         String confirmValue = textField3.getText().trim();
 
-        if(passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
+        //Reads each line, finds first word, checks if they match
+        boolean checker = false;
+        String line;
+        String[] elements;
+        try {
+            FileReader fr = new FileReader("UserData.txt");
+            BufferedReader br = new BufferedReader(fr);
+            while ((line = br.readLine()) != null) {
+                elements = line.split(" ");
+                if (elements[0].equals(userValue)) {
+                    checker = true;
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("File not found");
+        } catch (IOException ex) {
+            System.out.println("IO Exception");
+        }
 
-            try
-            {
+
+        //Checks the correct inputs
+        if (checker) {
+            System.out.println("Username Already Exists!");
+        } else if ((userValue.equals("") || passValue.equals("") || confirmValue.equals(""))) {
+            System.out.println("Empty value entered!");
+        } else if (!passValue.equals(confirmValue)) {
+            System.out.println("Passwords do not match!");
+        } else if (passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
+            try {
                 //This section writes to the file
                 FileWriter writer = new FileWriter("UserData.txt", true);
                 String[] writeString = {userValue, passValue};
-                String dataLine = String.join(" ",writeString);
+                String dataLine = String.join(" ", writeString);
                 dataLine += "\n";
                 System.out.println(dataLine);
                 writer.write(dataLine);
@@ -118,7 +140,6 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
             } catch (Exception e) {
                 ;
             }
-
         } else {
             System.out.println("Please enter valid username and password");
         }
