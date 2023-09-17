@@ -80,9 +80,12 @@ class Server extends Thread{
                 usernameLoggedInto = loginReceive( printWriterS1, bufferedReaderS1, loginDetails );
             }
             
-            // profile writing phase
+            // this profile writing phase
+            
 
-            // profile reading phase
+            // other profile reading phase
+
+
 
             // logging-out phase
             serverSocket1.close();
