@@ -40,7 +40,6 @@ public class Server extends Thread{
         }
         scanner1.close();
 
-        int b = 0;
         while(true) { // indefinite server running loop
             if ( availableServerNumbers.size() != 0 ) {// fire up whatever server numbers are available
                 int firstAvailableServerNumber = availableServerNumbers.get(0);
@@ -50,42 +49,39 @@ public class Server extends Thread{
 
             }
 
-            b++;
-            if(b==0){
-                System.out.println("cycle");
-            }
         }
     }
 
     private static void fileToArray(){
         try {
-            File dataFile = new File("UserData.txt");
+            File dataFile = new File(".idea\\src\\UserData.txt");
             Scanner fileScanner = new Scanner(dataFile);
 
             while ( fileScanner.hasNextLine() ) {
-                allData.add( fileScanner.nextLine().split(" ") );
+                String nxtln = fileScanner.nextLine();
+                System.out.println(nxtln);
+                allData.add( nxtln.split(",") );
             }
 
-            fileScanner.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
     private static void arrayToFile(){
         try {
-            FileWriter writer1 = new FileWriter("UserData.txt");
+            FileWriter writer1 = new FileWriter(".idea\\src\\UserData.txt");
 
             String toWrite = "";
             for (String[] profile : allData) {
                 for (String dataPoint : profile) {
-                    toWrite += dataPoint + " ";
+                    toWrite += dataPoint + ",";
                 }
+                toWrite += "\n";
             }
-            writer1.write(toWrite);
 
-            System.out.println(toWrite);
-
+            writer1.append(toWrite);
             writer1.close();
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -124,7 +120,6 @@ public class Server extends Thread{
             // logging-out phase
             serverSocket1.close();
             availableServerNumbers.add(this.serverNumber); // free up server number when thread ends
-            System.out.println(availableServerNumbers);
 
         } catch (UnknownHostException e1) {
             System.out.println(e1);
@@ -152,7 +147,7 @@ public class Server extends Thread{
         if ( null == loginDetails.get(username) ) { // user doesn't exist, create new user
             printWriterS1.println("User Doesn't Exist.");
 
-            allData.add(new String[] {username, password, "", "", "", ""});
+            allData.add(new String[] {username, password, " ", " ", " ", " "});
             arrayToFile();
 
             return null;
