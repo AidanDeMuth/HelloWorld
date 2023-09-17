@@ -2,14 +2,15 @@ import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 class Server extends Thread{
 
-    public static final int[] SERVER_PORTS = {5000, 5001, 5002, 5003, 5004};
-    public static final String SERVER_IP = "";
-    public static final String SERVER_NAME = "LOCALHOST";
+    public static final int[] SERVER_PORTS = {5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009};
     
     public static ArrayList<Integer> availableServerNumbers = new ArrayList<Integer>();
+    public static String serverIP = "127.0.0.1";
+    public static String serverName = "LOCALHOST";
 
     public int serverNumber;
 
@@ -23,6 +24,18 @@ class Server extends Thread{
             availableServerNumbers.add(i);
         }
 
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Enter the IP address of this server (press enter for default): ");
+        String serverIPInput = scanner1.nextLine();
+        if ( !"".equals(serverIPInput) ) {
+            serverIP = serverIPInput;
+        }
+        System.out.println("Enter the name of this server (press enter for default): ");
+        String serverNameInput = scanner1.nextLine();
+        if ( !"".equals(serverNameInput) ) {
+            serverIP = serverNameInput;
+        }
+        scanner1.close();
 
         int b = 0;
         while(true) { // indefinite server running loop
@@ -62,16 +75,20 @@ class Server extends Thread{
             loginDetails.put("Aidan", "password123");
 
             // logging-in phase
-            boolean loginSuccessful = false;
-            while ( !loginSuccessful ) {
-                loginSuccessful = loginReceive( printWriterS1, bufferedReaderS1, loginDetails );
+            String usernameLoggedInto = null;
+            while( null == usernameLoggedInto ) {
+                usernameLoggedInto = loginReceive( printWriterS1, bufferedReaderS1, loginDetails );
             }
             
-            // profile writing phase
+            // this profile writing phase
+            
 
-            // profile reading phase
+            // other profile reading phase
+
+
 
             // logging-out phase
+            serverSocket1.close();
             availableServerNumbers.add(this.serverNumber); // free up server number when thread ends
             System.out.println(availableServerNumbers);
 
@@ -82,7 +99,11 @@ class Server extends Thread{
         }
     }
 
-    private static boolean loginReceive( PrintWriter printWriterS1, BufferedReader bufferedReaderS1, HashMap loginDetails) throws IOException, UnknownHostException {
+    /*
+     * returns null if login was NOT successful
+     * 
+     */
+    private static String loginReceive( PrintWriter printWriterS1, BufferedReader bufferedReaderS1, HashMap loginDetails) throws IOException, UnknownHostException {
 
         // receive data
         String username = new String(bufferedReaderS1.readLine());
@@ -91,13 +112,13 @@ class Server extends Thread{
         // try to login and send feedback
         if ( null == loginDetails.get(username) ) { // user doesn't exist
             printWriterS1.println("User Doesn't Exist.");
-            return false;
+            return null;
         } else if ( !password.equals(loginDetails.get(username)) ) { // password is incorrect
             printWriterS1.println("Password is Incorrect.");
-            return false;
+            return null;
         } else { // login successful
             printWriterS1.println("Login Successful!");
-            return true;
+            return username;
         }
 
     }
