@@ -28,7 +28,7 @@ import java.util.*;
 public class MeetPurdueMain {
     public static void main(String[] args) {
         try {
-            CreateNewAccountForm form = new CreateNewAccountForm();
+            CreateLoginForm form = new CreateLoginForm();
             form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
             form.setSize(840, 840 / 12 * 9);
             form.setVisible(true);

@@ -35,7 +35,7 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
 
     JButton submitButton;
     JPanel formPanel;
-    JLabel usernameLabel, passwordLabel, confirmPasswordLabel;
+    JLabel usernameLabel, passwordLabel, confirmPasswordLabel, finalLabel;
     final JTextField textField1, textField2, textField3;
 
     CreateNewAccountForm() {
@@ -66,6 +66,12 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         formPanel.add(confirmPasswordLabel);
         formPanel.add(textField3);
         formPanel.add(submitButton);
+        //Last Label
+        finalLabel = new JLabel();
+        finalLabel.setText("Space for Text");
+        formPanel.add(finalLabel);
+
+        //Format
         add(formPanel, BorderLayout.CENTER);
 
         //Submit Button
@@ -83,10 +89,11 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
         String passValue = textField2.getText().trim();
         String confirmValue = textField3.getText().trim();
 
-        if(passValue.equals(confirmValue)) {
+        if(passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
 
             try
             {
+                //This section writes to the file
                 FileWriter writer = new FileWriter("UserData.txt", true);
                 String[] writeString = {userValue, passValue};
                 String dataLine = String.join(" ",writeString);
@@ -95,6 +102,19 @@ public class CreateNewAccountForm extends JFrame implements ActionListener{
                 writer.write(dataLine);
                 writer.flush();
                 writer.close();
+
+                //This section opens a new login
+                CreateLoginForm form = new CreateLoginForm();
+                form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
+                form.setSize(840, 840 / 12 * 9);
+                form.setVisible(true);
+                form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                form.setLocationRelativeTo(null);
+
+                //Close current form
+                setVisible(false);
+                dispose();
+
             } catch (Exception e) {
                 ;
             }

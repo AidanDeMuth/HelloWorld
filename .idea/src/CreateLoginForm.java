@@ -25,13 +25,49 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class CreateLoginForm extends JFrame implements ActionListener {
+public class CreateLoginForm extends JFrame{
     //Form components
 
-    JButton submitButton;
+    JButton submitButton, newAccountButton;
     JPanel formPanel;
     JLabel usernameLabel, passwordLabel;
     final JTextField textField1, textField2;
+
+    public void setUpButtonListeners(){
+        ActionListener submitListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String userValue = textField1.getText();
+                String passValue = textField2.getText();
+
+                if (userValue.equals("test1") && passValue.equals("test2")) {
+                    //send to new page
+                } else {
+                    System.out.println("Please enter valid username and password");
+                }
+            }
+        };
+
+        ActionListener newButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                //Create New Form
+                CreateNewAccountForm form = new CreateNewAccountForm();
+                form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
+                form.setSize(840, 840 / 12 * 9);
+                form.setVisible(true);
+                form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                form.setLocationRelativeTo(null);
+
+                //Remove Current Form
+                dispose();
+                setVisible(false);
+            }
+        };
+
+        submitButton.addActionListener(submitListener);
+        newAccountButton.addActionListener(newButtonListener);
+    }
 
     CreateLoginForm() {
 
@@ -48,6 +84,10 @@ public class CreateLoginForm extends JFrame implements ActionListener {
         //Submit Button
         submitButton = new JButton("SUBMIT");
 
+        //New Button
+        newAccountButton = new JButton("NEW ACCOUNT");
+        setUpButtonListeners();
+
         //Form List
         formPanel = new JPanel(new GridLayout(3, 1));
         formPanel.add(usernameLabel);
@@ -55,28 +95,17 @@ public class CreateLoginForm extends JFrame implements ActionListener {
         formPanel.add(passwordLabel);
         formPanel.add(textField2);
         formPanel.add(submitButton);
+        formPanel.add(newAccountButton);
         add(formPanel, BorderLayout.CENTER);
 
-        //Submit Button
-        submitButton.addActionListener(this);
+        //Form Title
         setTitle("Login Form");
+
+
 
         formPanel.setSize(1000,1000);
     }
 
-
-    public void actionPerformed(ActionEvent ae)
-    {
-        //Pulls info from text boxs
-        String userValue = textField1.getText();
-        String passValue = textField2.getText();
-
-        if(userValue.equals("test1") && passValue.equals("test2")) {
-            //send to new page
-        } else {
-            System.out.println("Please enter valid username and password");
-        }
-    }
 
 
 
