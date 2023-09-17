@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-class Server extends Thread{
+public class Server extends Thread{
 
     public static final int[] SERVER_PORTS = {5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009};
     

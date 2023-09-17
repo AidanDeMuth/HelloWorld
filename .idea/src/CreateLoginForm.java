@@ -1,13 +1,7 @@
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.net.*;
+import java.io.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-
 //idek
 import javax.swing.*;
 import java.awt.*;
@@ -37,36 +27,61 @@ public class CreateLoginForm extends JFrame{
     JLabel usernameLabel, passwordLabel;
     final JTextField textField1, textField2;
 
+    PrintWriter printWriterC1;
+    BufferedReader bufferedReaderC1;
+
     public void setUpButtonListeners(){
         ActionListener submitListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String userValue = textField1.getText();
-                String passValue = textField2.getText();
-
-                //Reads file to check if user and pass are correct
-                boolean checker = false;
-                String line;
-                String[] elements;
                 try {
-                    FileReader fr = new FileReader("UserData.txt");
-                    BufferedReader br = new BufferedReader(fr);
-                    while ((line = br.readLine()) != null) {
-                        elements = line.split(" ");
-                        if (elements[0].equals(userValue) && elements[1].equals(passValue)) {
-                            checker = true;
+
+                    String userValue = textField1.getText();
+                    String passValue = textField2.getText();
+
+                    //Reads file to check if user and pass are correct
+                    // NOTE: unused for now, may copy over for server-side data-keeping
+                    /*
+                    boolean checker = false;
+                    String line;
+                    String[] elements;
+                    try {
+                        FileReader fr = new FileReader("UserData.txt");
+                        BufferedReader br = new BufferedReader(fr);
+                        while ((line = br.readLine()) != null) {
+                            elements = line.split(" ");
+                            if (elements[0].equals(userValue) && elements[1].equals(passValue)) {
+                                checker = true;
+                            }
                         }
+                        br.close();
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("File not found");
+                    } catch (IOException ex) {
+                        System.out.println("IO Exception");
                     }
-                    br.close();
-                } catch (FileNotFoundException ex) {
-                    System.out.println("File not found");
-                } catch (IOException ex) {
-                    System.out.println("IO Exception");
-                }
-                if(checker) {
-                    System.out.println("Password correct!");
-                } else {
-                    System.out.println("Username/Password incorrect!");
+                    */
+
+                    boolean loginSuccessful = false;
+                    String loginFeedback = new String("");
+
+                    // send data
+                    printWriterC1.println(userValue);
+                    printWriterC1.println(passValue);
+                    // receive feedback
+                    loginFeedback = new String(bufferedReaderC1.readLine());
+                    loginSuccessful = "Login Successful!".equals(loginFeedback);
+
+                    if(loginSuccessful) {
+                        System.out.println("Password correct!");
+                    } else {
+                        System.out.println("Username/Password incorrect!");
+                    }
+
+                } catch (UnknownHostException e1){
+                    System.out.println(e1);
+                } catch (IOException e2){
+                    System.out.println(e2);
                 }
             }
         };
@@ -92,7 +107,10 @@ public class CreateLoginForm extends JFrame{
         newAccountButton.addActionListener(newButtonListener);
     }
 
-    CreateLoginForm() {
+    CreateLoginForm( PrintWriter printWriterC1arg, BufferedReader bufferedReaderC1arg ) {
+
+        printWriterC1 = printWriterC1arg;
+        bufferedReaderC1 = bufferedReaderC1arg;
 
         //Username Label
         usernameLabel = new JLabel();
