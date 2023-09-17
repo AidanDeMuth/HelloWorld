@@ -61,7 +61,6 @@ public class CreateLoginForm extends JFrame{
                     }
                     */
 
-                    boolean loginSuccessful = false;
                     String loginFeedback = new String("");
 
                     // send data
@@ -69,12 +68,13 @@ public class CreateLoginForm extends JFrame{
                     printWriterC1.println(passValue);
                     // receive feedback
                     loginFeedback = new String(bufferedReaderC1.readLine());
-                    loginSuccessful = "Login Successful!".equals(loginFeedback);
 
-                    if(loginSuccessful) {
-                        System.out.println("Password correct!");
-                    } else {
-                        System.out.println("Username/Password incorrect!");
+                    if ( "User Doesn't Exist.".equals(loginFeedback) ) {
+                        System.out.println("User Didn't Exist, a new profile has been created! Try logging in again with the same credentials.");
+                    } else if ( "Password is Incorrect.".equals(loginFeedback) ){
+                        System.out.println("Password incorrect for user! Try again.");
+                    } else if ( "Login Successful!".equals(loginFeedback) ) {
+                        System.out.println( "Login Successful!" );
                     }
 
                 } catch (UnknownHostException e1){
