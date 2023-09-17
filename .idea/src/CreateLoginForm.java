@@ -145,9 +145,4 @@ public class CreateLoginForm extends JFrame{
 
         formPanel.setSize(1000,1000);
     }
-
-
-
-
-
 }
