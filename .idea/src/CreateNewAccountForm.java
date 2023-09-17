@@ -1,10 +1,5 @@
 import java.net.*;
 import java.io.*;
-
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -17,12 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-
 //idek
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +29,13 @@ public class CreateNewAccountForm extends JFrame {
     JLabel usernameLabel, passwordLabel, confirmPasswordLabel, finalLabel;
     final JTextField textField1, textField2, textField3;
 
-    CreateNewAccountForm() {
+    PrintWriter printWriterC1;
+    BufferedReader bufferedReaderC1;
+
+    CreateNewAccountForm( PrintWriter printWriterC1arg, BufferedReader bufferedReaderC1arg ) {
+        printWriterC1 = printWriterC1arg;
+        bufferedReaderC1 = bufferedReaderC1arg;
+
         //Username Label
         usernameLabel = new JLabel();
         usernameLabel.setText("Enter Username");
@@ -132,7 +129,7 @@ public class CreateNewAccountForm extends JFrame {
                         writer.close();
 
                         //This section opens a new login
-                        CreateLoginForm form = new CreateLoginForm();
+                        CreateLoginForm form = new CreateLoginForm( printWriterC1, bufferedReaderC1 );
                         form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
                         form.setSize(840, 840 / 12 * 9);
                         form.setVisible(true);
@@ -156,7 +153,7 @@ public class CreateNewAccountForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //Create New Form
-                CreateLoginForm form = new CreateLoginForm();
+                CreateLoginForm form = new CreateLoginForm( printWriterC1, bufferedReaderC1 );
                 form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
                 form.setSize(840, 840 / 12 * 9);
                 form.setVisible(true);

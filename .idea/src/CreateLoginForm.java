@@ -42,7 +42,6 @@ public class CreateLoginForm extends JFrame{
                     //Reads file to check if user and pass are correct
                     // NOTE: unused for now, may copy over for server-side data-keeping
                     /*
-                    boolean checker = false;
                     String line;
                     String[] elements;
                     try {
@@ -90,7 +89,7 @@ public class CreateLoginForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 //Create New Form
-                CreateNewAccountForm form = new CreateNewAccountForm();
+                CreateNewAccountForm form = new CreateNewAccountForm( printWriterC1, bufferedReaderC1 );
                 form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
                 form.setSize(840, 840 / 12 * 9);
                 form.setVisible(true);
