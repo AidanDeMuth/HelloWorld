@@ -13,6 +13,7 @@ public class Server extends Thread{
     public static String serverName = "LOCALHOST";
 
     public int serverNumber;
+    private ArrayList<String[]> allData = new ArrayList<String[]>();
 
     public Server(int serverNumberArg) {
         this.serverNumber = serverNumberArg;
@@ -52,6 +53,13 @@ public class Server extends Thread{
                 System.out.println("cycle");
             }
         }
+    }
+
+    private void fileToArray(){
+
+    }
+    private void arrayToFile(){
+
     }
 
     public void run() {
@@ -110,10 +118,13 @@ public class Server extends Thread{
         String password = new String(bufferedReaderS1.readLine());
 
         // try to login and send feedback
-        if ( null == loginDetails.get(username) ) { // user doesn't exist
+        if ( null == loginDetails.get(username) ) { // user doesn't exist, create new user
             printWriterS1.println("User Doesn't Exist.");
+
+            allData.add(new String[] {username, password, "", "", "", ""});
+
             return null;
-        } else if ( !password.equals(loginDetails.get(username)) ) { // password is incorrect
+        } else if ( !password.equals(loginDetails.get(username)) ) { // password is incorrect, 
             printWriterS1.println("Password is Incorrect.");
             return null;
         } else { // login successful
