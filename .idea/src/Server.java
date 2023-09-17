@@ -11,9 +11,9 @@ public class Server extends Thread{
     public static ArrayList<Integer> availableServerNumbers = new ArrayList<Integer>();
     public static String serverIP = "127.0.0.1";
     public static String serverName = "LOCALHOST";
+    private static ArrayList<String[]> allData = new ArrayList<String[]>();
 
     public int serverNumber;
-    private ArrayList<String[]> allData = new ArrayList<String[]>();
 
     public Server(int serverNumberArg) {
         this.serverNumber = serverNumberArg;
@@ -21,6 +21,8 @@ public class Server extends Thread{
     }
     
     public static void main(String[] args) {
+        fileToArray();
+
         for (int i = 0; i < SERVER_PORTS.length; i++ ) {
             availableServerNumbers.add(i);
         }
@@ -55,11 +57,38 @@ public class Server extends Thread{
         }
     }
 
-    private void fileToArray(){
+    private static void fileToArray(){
+        try {
+            File dataFile = new File("UserData.txt");
+            Scanner fileScanner = new Scanner(dataFile);
 
+            while ( fileScanner.hasNextLine() ) {
+                allData.add( fileScanner.nextLine().split(" ") );
+            }
+
+            fileScanner.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
-    private void arrayToFile(){
+    private static void arrayToFile(){
+        try {
+            FileWriter writer1 = new FileWriter("UserData.txt");
 
+            String toWrite = "";
+            for (String[] profile : allData) {
+                for (String dataPoint : profile) {
+                    toWrite += dataPoint + " ";
+                }
+            }
+            writer1.write(toWrite);
+
+            System.out.println(toWrite);
+
+            writer1.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void run() {
@@ -79,13 +108,10 @@ public class Server extends Thread{
 
             ///////////////////////////////////////////////////////////////
 
-            HashMap<String, String> loginDetails = new HashMap<String, String>();
-            loginDetails.put("Aidan", "password123");
-
             // logging-in phase
             String usernameLoggedInto = null;
             while( null == usernameLoggedInto ) {
-                usernameLoggedInto = loginReceive( printWriterS1, bufferedReaderS1, loginDetails );
+                usernameLoggedInto = loginReceive( printWriterS1, bufferedReaderS1 );
             }
             
             // this profile writing phase
@@ -111,7 +137,12 @@ public class Server extends Thread{
      * returns null if login was NOT successful
      * 
      */
-    private static String loginReceive( PrintWriter printWriterS1, BufferedReader bufferedReaderS1, HashMap loginDetails) throws IOException, UnknownHostException {
+    private String loginReceive( PrintWriter printWriterS1, BufferedReader bufferedReaderS1) throws IOException, UnknownHostException {
+
+        HashMap<String, String> loginDetails = new HashMap<String, String>();
+        for (String[] profileLine : allData) {
+            loginDetails.put( profileLine[0], profileLine[1] );
+        }
 
         // receive data
         String username = new String(bufferedReaderS1.readLine());
@@ -122,6 +153,7 @@ public class Server extends Thread{
             printWriterS1.println("User Doesn't Exist.");
 
             allData.add(new String[] {username, password, "", "", "", ""});
+            arrayToFile();
 
             return null;
         } else if ( !password.equals(loginDetails.get(username)) ) { // password is incorrect, 
