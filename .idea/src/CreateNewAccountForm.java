@@ -93,11 +93,11 @@ public class CreateNewAccountForm extends JFrame {
                 String line;
                 String[] elements;
                 try {
-                    FileReader fr = new FileReader("UserData.csv");
+                    FileReader fr = new FileReader("UserData.txt");
                     BufferedReader br = new BufferedReader(fr);
 
                     while ((line = br.readLine()) != null) {
-                        elements = line.split(",");
+                        elements = line.split(" ");
                         if (elements[0].equals(userValue)) {
                             checker = true;
                         }
@@ -120,9 +120,9 @@ public class CreateNewAccountForm extends JFrame {
                 } else if (passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
                     try {
                         //This section writes to the file
-                        FileWriter writer = new FileWriter("UserData.csv", true);
+                        FileWriter writer = new FileWriter("UserData.txt", true);
                         String[] writeString = {userValue, passValue};
-                        String dataLine = String.join(",", writeString);
+                        String dataLine = String.join(" ", writeString);
                         dataLine += "\n";
                         System.out.println(dataLine);
                         writer.write(dataLine);
