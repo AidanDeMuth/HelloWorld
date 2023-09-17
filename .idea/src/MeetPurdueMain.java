@@ -37,7 +37,6 @@ public class MeetPurdueMain {
             if ( !"".equals(serverIPInput) ) {
                 serverIP = serverIPInput;
             }
-            scanner1.close();
 
             // tries to connect to open ServerSocket
             Socket socketC1 = null;
@@ -72,10 +71,8 @@ public class MeetPurdueMain {
             form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             form.setLocationRelativeTo(null);
 
-            Scanner waiter = new Scanner(System.in); // this is just to keep the main method from returning/ending
-            int waiterResult = waiter.nextInt();
-            System.out.println("AAAAAAAAAAAAAAAAAA");
-
+            scanner1.nextLine(); // this is just to keep the main method from returning/ending
+            scanner1.close();
             socketC1.close();
         } catch (Exception e) {
             System.out.println(e);
