@@ -1,7 +1,5 @@
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.net.*;
+import java.io.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -14,26 +12,104 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.Font;
-
 //idek
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class CreateLoginForm extends JFrame implements ActionListener {
+public class CreateLoginForm extends JFrame{
     //Form components
 
-    JButton submitButton;
+    JButton submitButton, newAccountButton;
     JPanel formPanel;
     JLabel usernameLabel, passwordLabel;
     final JTextField textField1, textField2;
 
-    CreateLoginForm() {
+    PrintWriter printWriterC1;
+    BufferedReader bufferedReaderC1;
+
+    public void setUpButtonListeners(){
+        ActionListener submitListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+
+                    String userValue = textField1.getText();
+                    String passValue = textField2.getText();
+
+                    //Reads file to check if user and pass are correct
+                    // NOTE: unused for now, may copy over for server-side data-keeping
+                    /*
+                    String line;
+                    String[] elements;
+                    try {
+                        FileReader fr = new FileReader("UserData.txt");
+                        BufferedReader br = new BufferedReader(fr);
+                        while ((line = br.readLine()) != null) {
+                            elements = line.split(" ");
+                            if (elements[0].equals(userValue) && elements[1].equals(passValue)) {
+                                checker = true;
+                            }
+                        }
+                        br.close();
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("File not found");
+                    } catch (IOException ex) {
+                        System.out.println("IO Exception");
+                    }
+                    */
+
+                    String loginFeedback = new String("");
+
+                    // send data
+                    printWriterC1.println(userValue);
+                    printWriterC1.println(passValue);
+                    // receive feedback
+                    loginFeedback = new String(bufferedReaderC1.readLine());
+
+                    if ( "User Doesn't Exist.".equals(loginFeedback) ) {
+                        System.out.println("User Didn't Exist, a new profile has been created! Try logging in again with the same credentials.");
+                    } else if ( "Password is Incorrect.".equals(loginFeedback) ){
+                        System.out.println("Password incorrect for user! Try again.");
+                    } else if ( "Login Successful!".equals(loginFeedback) ) {
+                        System.out.println( "Login Successful!" );
+                    }
+
+                } catch (UnknownHostException e1){
+                    System.out.println(e1);
+                } catch (IOException e2){
+                    System.out.println(e2);
+                }
+            }
+        };
+
+        ActionListener newButtonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                //Create New Form
+                CreateNewAccountForm form = new CreateNewAccountForm( printWriterC1, bufferedReaderC1 );
+                form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
+                form.setSize(840, 840 / 12 * 9);
+                form.setVisible(true);
+                form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                form.setLocationRelativeTo(null);
+
+                //Remove Current Form
+                dispose();
+                setVisible(false);
+            }
+        };
+
+        submitButton.addActionListener(submitListener);
+        newAccountButton.addActionListener(newButtonListener);
+    }
+
+    CreateLoginForm( PrintWriter printWriterC1arg, BufferedReader bufferedReaderC1arg ) {
+
+        printWriterC1 = printWriterC1arg;
+        bufferedReaderC1 = bufferedReaderC1arg;
 
         //Username Label
         usernameLabel = new JLabel();
@@ -48,6 +124,10 @@ public class CreateLoginForm extends JFrame implements ActionListener {
         //Submit Button
         submitButton = new JButton("SUBMIT");
 
+        //New Button
+        newAccountButton = new JButton("NEW ACCOUNT");
+        setUpButtonListeners();
+
         //Form List
         formPanel = new JPanel(new GridLayout(3, 1));
         formPanel.add(usernameLabel);
@@ -55,28 +135,17 @@ public class CreateLoginForm extends JFrame implements ActionListener {
         formPanel.add(passwordLabel);
         formPanel.add(textField2);
         formPanel.add(submitButton);
+        formPanel.add(newAccountButton);
         add(formPanel, BorderLayout.CENTER);
 
-        //Submit Button
-        submitButton.addActionListener(this);
+        //Form Title
         setTitle("Login Form");
+
+
 
         formPanel.setSize(1000,1000);
     }
 
-
-    public void actionPerformed(ActionEvent ae)
-    {
-        //Pulls info from text boxs
-        String userValue = textField1.getText();
-        String passValue = textField2.getText();
-
-        if(userValue.equals("test1") && passValue.equals("test2")) {
-            //send to new page
-        } else {
-            System.out.println("Please enter valid username and password");
-        }
-    }
 
 
 
