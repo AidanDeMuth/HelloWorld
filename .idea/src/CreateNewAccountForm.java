@@ -97,7 +97,7 @@ public class CreateNewAccountForm extends JFrame {
                     BufferedReader br = new BufferedReader(fr);
 
                     while ((line = br.readLine()) != null) {
-                        elements = line.split(" ");
+                        elements = line.split(",");
                         if (elements[0].equals(userValue)) {
                             checker = true;
                         }
@@ -120,9 +120,10 @@ public class CreateNewAccountForm extends JFrame {
                 } else if (passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
                     try {
                         //This section writes to the file
+                        System.out.println("got here");
                         FileWriter writer = new FileWriter("UserData.txt", true);
                         String[] writeString = {userValue, passValue};
-                        String dataLine = String.join(" ", writeString);
+                        String dataLine = String.join(",", writeString);
                         dataLine += "\n";
                         System.out.println(dataLine);
                         writer.write(dataLine);
