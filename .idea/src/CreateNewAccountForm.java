@@ -29,9 +29,9 @@ import java.util.*;
 //FileWriter
 
 
-public class CreateNewAccountForm extends JFrame implements ActionListener {
+public class CreateNewAccountForm extends JFrame {
 
-    JButton submitButton;
+    JButton submitButton, backButton;
     JPanel formPanel;
     JLabel usernameLabel, passwordLabel, confirmPasswordLabel, finalLabel;
     final JTextField textField1, textField2, textField3;
@@ -55,6 +55,11 @@ public class CreateNewAccountForm extends JFrame implements ActionListener {
         //Submit Button
         submitButton = new JButton("SUBMIT");
 
+        //Back Button
+        backButton = new JButton("BACK");
+
+        setUpButtonListeners();
+
         //Form List
         formPanel = new JPanel(new GridLayout(4, 1));
         formPanel.add(usernameLabel);
@@ -64,68 +69,91 @@ public class CreateNewAccountForm extends JFrame implements ActionListener {
         formPanel.add(confirmPasswordLabel);
         formPanel.add(textField3);
         formPanel.add(submitButton);
-        //Last Label
-        finalLabel = new JLabel();
-        finalLabel.setText("Space for Text");
-        formPanel.add(finalLabel);
+        formPanel.add(backButton);
 
         //Format
         add(formPanel, BorderLayout.CENTER);
 
         //Submit Button
-        submitButton.addActionListener(this);
         setTitle("Create Account Form");
 
         formPanel.setSize(1000, 1000);
     }
 
-    public void actionPerformed(ActionEvent ae) {
-        //Pulls info from text boxs
-        String userValue = textField1.getText().trim();
-        String passValue = textField2.getText().trim();
-        String confirmValue = textField3.getText().trim();
+    public void setUpButtonListeners() {
+        ActionListener submitListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                //Pulls info from text boxs
+                String userValue = textField1.getText().trim();
+                String passValue = textField2.getText().trim();
+                String confirmValue = textField3.getText().trim();
 
-        //Reads each line, finds first word, checks if they match
-        boolean checker = false;
-        String line;
-        String[] elements;
-        try {
-            FileReader fr = new FileReader("UserData.txt");
-            BufferedReader br = new BufferedReader(fr);
-            while ((line = br.readLine()) != null) {
-                elements = line.split(" ");
-                if (elements[0].equals(userValue)) {
-                    checker = true;
+                //Reads each line, finds first word, checks if they match
+                boolean checker = false;
+                String line;
+                String[] elements;
+                try {
+                    FileReader fr = new FileReader("UserData.txt");
+                    BufferedReader br = new BufferedReader(fr);
+                    while ((line = br.readLine()) != null) {
+                        elements = line.split(" ");
+                        if (elements[0].equals(userValue)) {
+                            checker = true;
+                        }
+                    }
+                    br.close();
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File not found");
+                } catch (IOException ex) {
+                    System.out.println("IO Exception");
+                }
+
+
+                //Checks the correct inputs
+                if (checker) {
+                    System.out.println("Username Already Exists!");
+                } else if ((userValue.equals("") || passValue.equals("") || confirmValue.equals(""))) {
+                    System.out.println("Empty value entered!");
+                } else if (!passValue.equals(confirmValue)) {
+                    System.out.println("Passwords do not match!");
+                } else if (passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
+                    try {
+                        //This section writes to the file
+                        FileWriter writer = new FileWriter("UserData.txt", true);
+                        String[] writeString = {userValue, passValue};
+                        String dataLine = String.join(" ", writeString);
+                        dataLine += "\n";
+                        System.out.println(dataLine);
+                        writer.write(dataLine);
+                        writer.flush();
+                        writer.close();
+
+                        //This section opens a new login
+                        CreateLoginForm form = new CreateLoginForm();
+                        form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
+                        form.setSize(840, 840 / 12 * 9);
+                        form.setVisible(true);
+                        form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                        form.setLocationRelativeTo(null);
+
+                        //Close current form
+                        setVisible(false);
+                        dispose();
+
+                    } catch (Exception e) {
+                        ;
+                    }
+                } else {
+                    System.out.println("Please enter valid username and password");
                 }
             }
-            br.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("File not found");
-        } catch (IOException ex) {
-            System.out.println("IO Exception");
-        }
+        };
 
-
-        //Checks the correct inputs
-        if (checker) {
-            System.out.println("Username Already Exists!");
-        } else if ((userValue.equals("") || passValue.equals("") || confirmValue.equals(""))) {
-            System.out.println("Empty value entered!");
-        } else if (!passValue.equals(confirmValue)) {
-            System.out.println("Passwords do not match!");
-        } else if (passValue.equals(confirmValue) && (userValue != null && passValue != null && confirmValue != null)) {
-            try {
-                //This section writes to the file
-                FileWriter writer = new FileWriter("UserData.txt", true);
-                String[] writeString = {userValue, passValue};
-                String dataLine = String.join(" ", writeString);
-                dataLine += "\n";
-                System.out.println(dataLine);
-                writer.write(dataLine);
-                writer.flush();
-                writer.close();
-
-                //This section opens a new login
+        ActionListener backListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                //Create New Form
                 CreateLoginForm form = new CreateLoginForm();
                 form.setPreferredSize(new Dimension(840, 840 / 12 * 9));
                 form.setSize(840, 840 / 12 * 9);
@@ -133,15 +161,13 @@ public class CreateNewAccountForm extends JFrame implements ActionListener {
                 form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 form.setLocationRelativeTo(null);
 
-                //Close current form
+                //Remove old form
                 setVisible(false);
                 dispose();
-
-            } catch (Exception e) {
-                ;
             }
-        } else {
-            System.out.println("Please enter valid username and password");
-        }
+        };
+
+        submitButton.addActionListener(submitListener);
+        backButton.addActionListener(backListener);
     }
 }

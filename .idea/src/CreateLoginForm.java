@@ -4,6 +4,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +44,29 @@ public class CreateLoginForm extends JFrame{
                 String userValue = textField1.getText();
                 String passValue = textField2.getText();
 
-                if (userValue.equals("test1") && passValue.equals("test2")) {
-                    //send to new page
+                //Reads file to check if user and pass are correct
+                boolean checker = false;
+                String line;
+                String[] elements;
+                try {
+                    FileReader fr = new FileReader("UserData.txt");
+                    BufferedReader br = new BufferedReader(fr);
+                    while ((line = br.readLine()) != null) {
+                        elements = line.split(" ");
+                        if (elements[0].equals(userValue) && elements[1].equals(passValue)) {
+                            checker = true;
+                        }
+                    }
+                    br.close();
+                } catch (FileNotFoundException ex) {
+                    System.out.println("File not found");
+                } catch (IOException ex) {
+                    System.out.println("IO Exception");
+                }
+                if(checker) {
+                    System.out.println("Password correct!");
                 } else {
-                    System.out.println("Please enter valid username and password");
+                    System.out.println("Username/Password incorrect!");
                 }
             }
         };
